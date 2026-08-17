@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منوی بازی‌ها</title>
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <style>
+        :root {
+            --bg: #faf5ff;
+            --card-bg: #ffffff;
+            --text: #4a4458;
+            --text-light: #6b7280;
+            --dark: #1e1b2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IRANSans', Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px 12px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .games-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border: 2px solid #000000;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 4px 4px 0 #000000;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            animation: fadeInUp 0.5s ease backwards;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 0 #000000;
+        }
+
+        .game-card:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #000000;
+        }
+
+        .game-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            border-bottom: 2px solid #000000;
+        }
+
+        .game-info {
+            padding: 14px 16px;
+        }
+
+        .game-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .game-desc {
+            font-size: 11px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="games-list" id="gamesList"></div>
+    </div>
+
+    <script>
+        (function() {
+            const webApp = window.Eitaa?.WebApp;
+            
+            if (webApp) {
+                webApp.ready();
+                webApp.expand();
+            }
+
+            const games = [
+                {
+                    image: 'https://picsum.photos/400/225?random=1',
+                    title: 'بازی اول',
+                    desc: 'توضیح بازی اول اینجا قرار می‌گیرد. لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ.',
+                    color: '#a855f7'
+                },
+                {
+                    image: 'https://picsum.photos/400/225?random=2',
+                    title: 'بازی دوم',
+                    desc: 'توضیح بازی دوم اینجا قرار می‌گیرد. لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ.',
+                    color: '#3b82f6'
+                },
+                {
+                    image: 'https://picsum.photos/400/225?random=3',
+                    title: 'بازی سوم',
+                    desc: 'توضیح بازی سوم اینجا قرار می‌گیرد. لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ.',
+                    color: '#10b981'
+                },
+                {
+                    image: 'https://picsum.photos/400/225?random=4',
+                    title: 'بازی چهارم',
+                    desc: 'توضیح بازی چهارم اینجا قرار می‌گیرد. لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ.',
+                    color: '#ef4444'
+                },
+                {
+                    image: 'https://picsum.photos/400/225?random=5',
+                    title: 'بازی پنجم',
+                    desc: 'توضیح بازی پنجم اینجا قرار می‌گیرد. لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ.',
+                    color: '#f97316'
+                },
+                {
+                    image: 'https://picsum.photos/400/225?random=6',
+                    title: 'بازی ششم',
+                    desc: 'توضیح بازی ششم اینجا قرار می‌گیرد. لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ.',
+                    color: '#ec4899'
+                }
+            ];
+
+            const gamesList = document.getElementById('gamesList');
+            
+            gamesList.innerHTML = games.map((game, index) => {
+                return `
+                    <div class="game-card" style="animation-delay: ${index * 0.1}s" onclick="openGame(${index})">
+                        <img src="${game.image}" class="game-image" alt="${game.title}" style="background: ${game.color};">
+                        <div class="game-info" style="border-top: 3px solid ${game.color};">
+                            <div class="game-title" style="color: ${game.color};">${game.title}</div>
+                            <div class="game-desc">${game.desc}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            window.openGame = function(index) {
+                if (webApp) {
+                    webApp.HapticFeedback?.impactOccurred('light');
+                }
+                console.log('باز کردن بازی:', games[index].title);
+            };
+        })();
+    </script>
+</body>
+</html>
