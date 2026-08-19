@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منوی بازی‌ها</title>
     <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,11 +19,51 @@
             color: #4a4458;
             min-height: 100vh;
             padding: 20px 12px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .floating-icons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-icon {
+            position: absolute;
+            animation: floatAround 20s linear infinite;
+            opacity: 0.1;
+            color: #a855f7;
+        }
+
+        @keyframes floatAround {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translate(30px, -40px) rotate(90deg) scale(1.2);
+            }
+            50% {
+                transform: translate(-20px, -80px) rotate(180deg) scale(0.9);
+            }
+            75% {
+                transform: translate(40px, -50px) rotate(270deg) scale(1.1);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg) scale(1);
+            }
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .games-grid {
@@ -92,6 +133,8 @@
     </style>
 </head>
 <body>
+    <div class="floating-icons" id="floatingIcons"></div>
+
     <div class="container">
         <div class="games-grid" id="gamesGrid"></div>
     </div>
@@ -105,9 +148,41 @@
                 webApp.expand();
             }
 
+            const gameIcons = [
+                'fa-gamepad', 'fa-dice', 'fa-chess', 'fa-puzzle-piece',
+                'fa-trophy', 'fa-star', 'fa-crown', 'fa-ghost',
+                'fa-chess-knight', 'fa-chess-queen', 'fa-chess-rook', 'fa-chess-bishop',
+                'fa-chess-pawn', 'fa-dice-d6', 'fa-dice-d20', 'fa-dragon',
+                'fa-dungeon', 'fa-hat-wizard', 'fa-skull', 'fa-fire',
+                'fa-bolt', 'fa-gem', 'fa-coins', 'fa-medal',
+                'fa-heart', 'fa-music', 'fa-wand-magic-sparkles', 'fa-shield-halved',
+                'fa-sword', 'fa-robot', 'fa-rocket', 'fa-meteor',
+                'fa-diamond', 'fa-clover', 'fa-sparkles', 'fa-wand-sparkles'
+            ];
+
+            const floatingIcons = document.getElementById('floatingIcons');
+            
+            let iconsHTML = '';
+            gameIcons.forEach((icon, index) => {
+                const left = Math.random() * 90;
+                const top = Math.random() * 90;
+                const size = 20 + Math.random() * 30;
+                const delay = Math.random() * 5;
+                const duration = 15 + Math.random() * 15;
+                
+                iconsHTML += `
+                    <i class="fa-solid ${icon} floating-icon" 
+                       style="left: ${left}%; top: ${top}%; font-size: ${size}px; 
+                              animation-delay: ${delay}s; animation-duration: ${duration}s;">
+                    </i>
+                `;
+            });
+            
+            floatingIcons.innerHTML = iconsHTML;
+
             const games = [
                 {
-                    image: 'https://cdn.imgurl.ir/uploads/z37471_InShot_20260819_161157857.jpg',
+                    image: 'https://cdn.imgurl.ir/uploads/r102593_InShot_20260817_115945628.png',
                     title: 'کوییزیکو',
                     desc: 'بازی کوییز آنلاین با رقابت و امتیاز',
                     color: '#a855f7',
